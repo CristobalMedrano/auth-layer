@@ -1,15 +1,15 @@
-import type { UserSTDForm } from "~/schemas/AuthSchema";
+import type { LoginForm } from "~/schemas/AuthSchema";
 
 export const authService = {
-  login: async (endpoint: string, userForm: UserSTDForm) => {
+  login: async (endpoint: string, loginForm: LoginForm) => {
     const api = useApi();
     try {
       const data = await api(endpoint, {
         method: "POST",
         body: {
-          user: userForm.email,
-          domain: userForm.domain,
-          password: userForm.password,
+          user: loginForm.email,
+          domain: loginForm.domain,
+          password: loginForm.password,
         },
       });
       return {

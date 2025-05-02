@@ -1,24 +1,32 @@
-import type { LoginForm } from "~/schemas/AuthSchema";
-
+/**
+ * AuthService provides authentication-related API methods.
+ * Each method returns an object with success, data, and optional error fields.
+ */
 export const authService = {
-  login: async (endpoint: string, loginForm: LoginForm) => {
+  /**
+   * Logs in a user by sending a POST request to the specified endpoint.
+   * @template T - Expected response data type.
+   * @param endpoint - API endpoint for login.
+   * @param payload - Request body payload.
+   * @returns Promise resolving to an object with success, data, and error fields.
+   */
+  login: async <T = unknown>(endpoint: string, payload: unknown) => {
     const api = useApi();
+
     try {
       const data = await api(endpoint, {
         method: "POST",
-        body: {
-          user: loginForm.email,
-          domain: loginForm.domain,
-          password: loginForm.password,
-        },
+        body: payload as Record<string, any>,
       });
+
       return {
         success: true,
-        data: data,
+        data: data as T,
       };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error) || null;
+
       return {
         success: false,
         data: null,
@@ -26,19 +34,29 @@ export const authService = {
       };
     }
   },
-  logout: async (endpoint: string) => {
+
+  /**
+   * Logs out a user by sending a POST request to the specified endpoint.
+   * @template T - Expected response data type.
+   * @param endpoint - API endpoint for logout.
+   * @returns Promise resolving to an object with success, data, and error fields.
+   */
+  logout: async <T = unknown>(endpoint: string) => {
     const api = useApi();
+
     try {
       const data = await api(endpoint, {
         method: "POST",
       });
+
       return {
         success: true,
-        data: data,
+        data: data as T,
       };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error) || null;
+
       return {
         success: false,
         data: null,
@@ -46,19 +64,29 @@ export const authService = {
       };
     }
   },
-  getUser: async (endpoint: string) => {
+
+  /**
+   * Retrieves the current user by sending a GET request to the specified endpoint.
+   * @template T - Expected response data type.
+   * @param endpoint - API endpoint to get user data.
+   * @returns Promise resolving to an object with success, data, and error fields.
+   */
+  getUser: async <T = unknown>(endpoint: string) => {
     const api = useApi();
+
     try {
       const { data } = await api(endpoint, {
         method: "GET",
       });
+
       return {
         success: true,
-        data: data,
+        data: data as T,
       };
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : String(error) || null;
+
       return {
         success: false,
         data: null,
